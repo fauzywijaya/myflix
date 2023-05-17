@@ -1,6 +1,8 @@
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:myflix/src/common_widget/loading/loading_widget.dart';
+import 'package:myflix/src/constants/constants.dart';
+import 'package:myflix/src/exceptions/network_exceptions.dart';
 
 class AsyncValueWidget<T> extends StatelessWidget {
   const AsyncValueWidget(
@@ -27,6 +29,26 @@ class AsyncValueWidget<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return value.when(
+      data: data,
+      loading: () {
+        const loadingWidget = Center(
+          child: LoadingWidget(),
+        );
+        return loading?.call(loadingWidget) ?? loadingWidget;
+      },
+      error: (e, stackTrace) {
+        final message =
+            NetworkExceptions.getErrorMessage(e as NetworkExceptions);
+        final errorWidget = Center(
+          child: Text(
+            message,
+            style: TypographyApp.text1,
+            textAlign: TextAlign.center,
+          ),
+        );
+        return error?.call(errorWidget) ?? errorWidget;
+      },
+    );
   }
 }
