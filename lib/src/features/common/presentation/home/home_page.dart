@@ -9,11 +9,15 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      body: Center(
-        child: Text(
-          'Hello World!',
-          style: TypographyApp.headlines1.white,
-        ),
+      body: Row(
+        children: [
+          Center(
+            child: Text(
+              'Hello World!',
+              style: TypographyApp.headlines1.white,
+            ),
+          ),
+        ],
       ),
     );
   }

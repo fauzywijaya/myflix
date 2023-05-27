@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:myflix/src/common_widget/common_widget.dart';
 import 'package:myflix/src/constants/constants.dart';
 
 enum ButtonType {
@@ -11,6 +12,7 @@ class ButtonWidget extends StatelessWidget {
   final ButtonType buttonType;
   final Function()? onTap;
   final String text;
+  final bool isLoading;
   final Widget? prefix;
 
   const ButtonWidget({
@@ -18,6 +20,7 @@ class ButtonWidget extends StatelessWidget {
     required this.buttonType,
     this.onTap,
     required this.text,
+    this.isLoading = false,
     this.prefix,
   }) : super(key: key);
 
@@ -25,6 +28,7 @@ class ButtonWidget extends StatelessWidget {
     Key? key,
     this.onTap,
     required this.text,
+    this.isLoading = false,
     this.prefix,
   })  : buttonType = ButtonType.primary,
         super(key: key);
@@ -33,6 +37,7 @@ class ButtonWidget extends StatelessWidget {
     Key? key,
     this.onTap,
     required this.text,
+    this.isLoading = false,
     this.prefix,
   })  : buttonType = ButtonType.outlined,
         super(key: key);
@@ -53,13 +58,22 @@ class ButtonWidget extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8.r),
         side: isOutlined
-            ? const BorderSide(color: ColorApp.white, width: 0.4)
+            ? const BorderSide(
+                color: ColorApp.white,
+                width: 0.4,
+              )
             : BorderSide.none,
       ),
       child: InkWell(
         onTap: onTap,
         customBorder: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.r),
+          side: isOutlined
+              ? const BorderSide(
+                  color: ColorApp.white,
+                  width: 0.4,
+                )
+              : BorderSide.none,
         ),
         overlayColor: MaterialStateProperty.all(getFocusColor()),
         focusColor: getFocusColor(),
@@ -69,19 +83,25 @@ class ButtonWidget extends StatelessWidget {
             vertical: SizeApp.h16,
           ),
           child: Center(
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (prefix != null) ...[
-                  prefix!,
-                  Gap.w8,
-                ],
-                Text(
-                  text,
-                  style: TypographyApp.headline3,
-                ),
-              ],
-            ),
+            child: isLoading
+                ? SizedBox(
+                    height: SizeApp.customHeight(22),
+                    width: SizeApp.customWidth(22),
+                    child: const LoadingWidget(),
+                  )
+                : Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (prefix != null) ...[
+                        prefix!,
+                        Gap.w8,
+                      ],
+                      Text(
+                        text,
+                        style: TypographyApp.headline3,
+                      ),
+                    ],
+                  ),
           ),
         ),
       ),
