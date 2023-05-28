@@ -24,8 +24,8 @@ class LoginFormSection extends ConsumerWidget {
           controller: controller.passwordController,
           hintText: "Password",
           onChanged: (value) {},
-          isObsecure: state.isObscure,
-          onObsecureTap: controller.onObsecureTap,
+          isObscure: state.isObscure,
+          onObscureTap: controller.onObsecureTap,
         ),
       ],
     );

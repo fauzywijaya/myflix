@@ -1,50 +1,60 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:myflix/src/constants/constants.dart';
 import 'package:myflix/src/shared/extensions/extensions.dart';
 
+enum InputFormType {
+  normal,
+  password,
+  button,
+}
+
 class InputFormWidget extends StatelessWidget {
   final TextEditingController controller;
-  final Function(String value)? onChanged;
   final String hintText;
-  final bool isPassword;
-  final bool isObsecure;
-  final Function()? onTap;
-  final Function()? onObsecureTap;
+  final Function(String value)? onChanged;
+  final bool isObscure;
+  final Function()? onObscureTap;
+  final InputFormType inputFormType;
   final bool readOnly;
+  final VoidCallback? onTap;
 
-  const InputFormWidget(
-      {Key? key,
-      required this.controller,
-      this.onChanged,
-      required this.hintText,
-      this.onTap})
-      : isObsecure = false,
-        onObsecureTap = null,
-        isPassword = false,
+  const InputFormWidget({
+    super.key,
+    required this.controller,
+    required this.hintText,
+    this.onChanged,
+  })  : inputFormType = InputFormType.normal,
+        isObscure = false,
         readOnly = false,
-        super(key: key);
+        onObscureTap = null,
+        onTap = null;
 
-  const InputFormWidget.password(
-      {Key? key,
-      required this.controller,
-      this.onChanged,
-      required this.hintText,
-      this.isObsecure = true,
-      this.onObsecureTap,
-      this.onTap})
-      : isPassword = true,
-        readOnly = false,
-        super(key: key);
+  const InputFormWidget.password({
+    super.key,
+    required this.controller,
+    required this.hintText,
+    this.onTap,
+    this.onChanged,
+    this.onObscureTap,
+    this.isObscure = true,
+  })  : inputFormType = InputFormType.password,
+        readOnly = false;
 
-  const InputFormWidget.dateTime(
-      {Key? key, required this.controller, required this.hintText, this.onTap})
-      : isObsecure = false,
-        onChanged = null,
-        onObsecureTap = null,
-        isPassword = false,
+  bool get isPassword => inputFormType == InputFormType.password;
+
+  const InputFormWidget.button({
+    super.key,
+    required this.controller,
+    required this.hintText,
+    this.onTap,
+  })  : inputFormType = InputFormType.button,
+        isObscure = false,
         readOnly = true,
-        super(key: key);
+        onChanged = null,
+        onObscureTap = null;
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +63,7 @@ class InputFormWidget extends StatelessWidget {
       onChanged: onChanged,
       readOnly: readOnly,
       onTap: onTap,
-      obscureText: isObsecure,
+      obscureText: isObscure,
       decoration: InputDecoration(
         filled: true,
         fillColor: ColorApp.darkGrey,
@@ -69,9 +79,9 @@ class InputFormWidget extends StatelessWidget {
         hintStyle: TypographyApp.text1.grey,
         suffix: isPassword
             ? GestureDetector(
-                onTap: onObsecureTap,
+                onTap: onObscureTap,
                 child: Text(
-                  isObsecure ? 'SHOW' : 'HIDE',
+                  isObscure ? 'SHOW' : 'HIDE',
                   style: TypographyApp.text1.grey,
                 ),
               )

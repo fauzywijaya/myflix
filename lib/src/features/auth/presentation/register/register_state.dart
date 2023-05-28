@@ -1,14 +1,31 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 class RegisterState {
-  final bool isObsecure;
+  final AsyncValue<String?> registerValue;
+  final bool isObscure;
+  final DateTime? birthDate;
+  final int? gender;
   const RegisterState({
-    this.isObsecure = true,
+    this.registerValue = const AsyncData(null),
+    this.isObscure = true,
+    this.birthDate,
+    this.gender,
   });
 
+  bool get isLoading => registerValue.isLoading;
+
   RegisterState copyWith({
-    bool? isObsecure,
+    AsyncValue<String?>? registerValue,
+    bool? isObscure,
+    DateTime? birthDate,
+    int? gender,
   }) {
     return RegisterState(
-      isObsecure: isObsecure ?? this.isObsecure,
+      registerValue: registerValue ?? this.registerValue,
+      isObscure: isObscure ?? this.isObscure,
+      birthDate: birthDate ?? this.birthDate,
+      gender: gender ?? this.gender,
     );
   }
 }
